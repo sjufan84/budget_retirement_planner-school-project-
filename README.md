@@ -138,26 +138,34 @@ end_date = pd.Timestamp('2021-10-22', tz = 'America/New_York').isoformat()`
 
 ### Once we have isolated the closing prices from the returned stock and bond DataFrame, we can add our the value of our client's stocks and bonds (total shares * returned closing values) to the value of their crypto wallet and generate a pie chart illustrating their overall holdings --  
 
-`savings_df.plot.pie(y='amount', title = 'Pie chart of percentage of portfolio containing stocks/bonds and crypto wallet')
-`
-![Pie chart of portfolio holdings](./Resources./portfolio_pie.png)
+`savings_df.plot.pie(y='amount', title = 'Pie chart of percentage of portfolio containing stocks/bonds and crypto wallet')`
+
+![Pie chart of portfolio holdings](./Resources/portfolio_pie.png)
 
 ### Once we know the value of our client's total portfolio, we can use a if/else statement to evaluate whether it meets our established savings threshold --  
 
-`if total_portfolio > emergency_fund:
-    print('Congratulations, you have enough for an emergency fund!')
-elif total_portfolio == emergency_fund:
-    print('Congratulations, you reached your emergency fund goal!')
-else:
-    print('Keep going, you are (emergency_fund - total_portfolio) away from completing your goal')`
+```python 
+if total_portfolio > emergency_fund:  
+    print('Congratulations, you have enough for an emergency fund!')  
+    
+elif total_portfolio == emergency_fund:    
+    print('Congratulations, you reached your emergency fund goal!')    
+    
+else:  
+    print('Keep going, you are (emergency_fund - total_portfolio) away from completing your goal')
+```
 
 ### We can use our historical stock data from the Alpaca API to run Monte Carlo simulations to project out potential future earnings over a set amount of time.  We do this by utilizing an instance of the MCSimulation class we imported from MCForecastTools:  
 
-`MC_thirty_years = MCSimulation(
-    portfolio_data = historical_df,
-    weights = [0.4, 0.6],
-    num_simulation = 500,
-    num_trading_days = 252 * 30)` *-- notice we passed in the portfolio dataframe from the Alpaca API call, the weights that we wanted each stock to hold in our portfolio, the number of simulations and the total number of trading days for 30 years.  
+```python
+    MC_thirty_years = MCSimulation(  
+    portfolio_data = historical_df,  
+    weights = [0.4, 0.6],  
+    num_simulation = 500,  
+    num_trading_days = 252 * 30)  
+```
+   
+*-- notice we passed in the portfolio dataframe from the Alpaca API call, the weights that we wanted each stock to hold in our portfolio, the number of simulations and the total number of trading days for 30 years.  
     
 Once the simulation has been run, we can plot cumulative portfolio trajectories and the distribution of returns among the simulations we ran --  
 
@@ -180,9 +188,10 @@ min               4.066270
 25%              19.949052  
 50%              35.121870  
 75%              59.554398  
-max             345.257869 
+max             345.257869  
+
 **95% CI Lower  7.882472**  
-**95% CI Upper  155.088206**  
+**95% CI Upper  155.088206**    
 Name: 7560, dtype: float64
 
 With all of these plots and summary statistics, we can then evaluate our clients ability to retire given a certain time frame, portfolio, and the balance of their portfolio and its impact on future earnings.
